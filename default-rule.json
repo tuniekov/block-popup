@@ -1,0 +1,80 @@
+{
+  "dzen.ru": {
+    "enabled": true,
+    "rules": [
+      {
+        "conditions": [
+          {
+            "pattern": "Хотите видеть больше",
+            "type": "phrase"
+          },
+          {
+            "type": "isPopup",
+            "value": true
+          },
+          {
+            "depth": 2,
+            "type": "hasPopupChild"
+          }
+        ],
+        "description": "Хотите видеть больше + Попап",
+        "enabled": true
+      },
+      {
+        "conditions": [
+          {
+            "pattern": "Сделать поиск Яндекса",
+            "type": "phrase"
+          },
+          {
+            "type": "isPopup",
+            "value": true
+          }
+        ],
+        "description": "Сделать поиск Яндекса + Потомок-попап",
+        "enabled": true
+      },
+      {
+        "conditions": [
+          {
+            "pattern": "c29dda069",
+            "type": "class"
+          }
+        ],
+        "description": "Блокировка всплывающего попапа",
+        "enabled": true
+      },
+      {
+        "conditions": [
+          {
+            "pattern": "content--article-action-island-desktop__container-12",
+            "type": "class"
+          }
+        ],
+        "description": "Блокировка попапа панели управления на статьях",
+        "enabled": true
+      },
+      {
+        "conditions": [
+          {
+            "pattern": "bbe8c6c7b",
+            "type": "class"
+          }
+        ],
+        "description": "Класс: \"bbe8c6c7b\"",
+        "enabled": true,
+        "priority": "high"
+      },
+      {
+        "conditions": [
+          {
+            "pattern": "a667c15fd",
+            "type": "class"
+          }
+        ],
+        "description": "Класс: \"a667c15fd\"",
+        "enabled": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Popup - Настройки</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="options-container">
+    <div class="options-header">
+      <h1>Block Popup - Расширенные настройки</h1>
+      <p>Управление правилами блокировки попапов для сайтов</p>
+    </div>
+    
+    <div class="options-section">
+      <h2>Сайты с настройками блокировки</h2>
+      <p>Список сайтов, для которых настроена блокировка попапов</p>
+      
+      <div class="site-list" id="siteList">
+        <!-- Список сайтов будет добавлен через JavaScript -->
+        <div class="empty-state" id="emptySiteList">
+          <p>Нет сайтов с настройками блокировки</p>
+          <p>Добавьте сайты через popup расширения</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Интерфейс редактирования правил -->
+    <div class="options-section" id="ruleEditSection" style="display: none;">
+      <h2>Редактирование правил для <span id="editingSiteName"></span></h2>
+      <p>Управление правилами блокировки попапов для выбранного сайта</p>
+      
+      <div class="site-controls">
+        <div class="setting-item">
+          <label for="siteEnabled">Блокировка включена для сайта</label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="siteEnabled">
+            <span class="toggle-slider"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="rules-section">
+        <h3>Правила блокировки</h3>
+        <div class="rules-list" id="editRulesList">
+          <div class="empty-rules" id="emptyRules">
+            <p>Нет правил блокировки</p>
+            <p>Добавьте правила ниже</p>
+          </div>
+        </div>
+        
+        <div class="add-rule-section">
+          <h4>Добавить новое правило</h4>
+          <div class="rule-form">
+            <div class="rule-description">
+              <input type="text" id="newRuleDescription" placeholder="Описание правила (необязательно)">
+            </div>
+            
+            <div id="newConditionsContainer">
+              <!-- Здесь будут добавляться условия -->
+              <div class="condition-item" data-index="0">
+                <div class="condition-header">
+                  <span class="condition-title">Условие 1</span>
+                  <button type="button" class="remove-condition-btn" title="Удалить условие" style="display: none;">×</button>
+                </div>
+                <div class="condition-content">
+                  <select class="condition-type">
+                    <option value="content">Текст содержит</option>
+                    <option value="phrase">Словосочетание</option>
+                    <option value="outerHTML">HTML содержит</option>
+                    <option value="class">Класс</option>
+                    <option value="id">ID</option>
+                    <option value="selector">Селектор</option>
+                    <option value="isPopup">Является попапом</option>
+                    <option value="isLink">Является ссылкой</option>
+                    <option value="hasPopupParent">Родитель-попап</option>
+                    <option value="hasPopupChild">Потомок-попап</option>
+                  </select>
+                  <div class="condition-value-container">
+                    <input type="text" class="condition-pattern" placeholder="Введите шаблон">
+                    <div class="condition-depth-container" style="display: none;">
+                      <label>Уровень:</label>
+                      <input type="number" class="condition-depth" min="1" max="5" value="2">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="add-condition-container">
+              <button type="button" id="addConditionBtn" class="secondary-button">+ Добавить условие</button>
+            </div>
+            
+            <div class="rule-buttons">
+              <button type="button" id="addRuleBtn" class="primary-button">Добавить правило</button>
+            </div>
+          </div>
+          <div class="rule-help">
+            <p><strong>Типы условий:</strong></p>
+            <ul>
+              <li><strong>Текст содержит:</strong> Элемент содержит указанный текст</li>
+              <li><strong>Словосочетание:</strong> Элемент содержит точное словосочетание</li>
+              <li><strong>HTML содержит:</strong> HTML-код элемента содержит указанный текст</li>
+              <li><strong>Класс:</strong> Элемент имеет указанный CSS класс</li>
+              <li><strong>ID:</strong> Элемент имеет указанный ID</li>
+              <li><strong>Селектор:</strong> Элемент соответствует CSS селектору</li>
+              <li><strong>Является попапом:</strong> Элемент определяется как попап</li>
+              <li><strong>Является ссылкой:</strong> Элемент является ссылкой (тег a)</li>
+              <li><strong>Родитель-попап:</strong> Элемент имеет родителя-попап до указанного уровня вверх</li>
+              <li><strong>Потомок-попап:</strong> Элемент имеет потомка-попап до указанного уровня вниз</li>
+            </ul>
+            <p><strong>Примечание:</strong> Для условий, связанных с попапами (Является попапом, Родитель-попап, Потомок-попап), достаточно выполнения ХОТЯ БЫ ОДНОГО из них. Для всех остальных условий требуется выполнение ВСЕХ условий одновременно.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="buttons-row">
+        <button id="cancelEditBtn" class="secondary-button">Отмена</button>
+        <button id="saveRulesBtn" class="primary-button">Сохранить изменения</button>
+      </div>
+    </div>
+    
+    <div class="options-section">
+      <h2>Импорт/Экспорт настроек</h2>
+      <p>Сохранение и восстановление настроек блокировки</p>
+      
+      <div class="buttons-row">
+        <button id="exportSettings" class="secondary-button">Экспорт настроек</button>
+        <button id="importSettings" class="secondary-button">Импорт настроек</button>
+      </div>
+      
+      <div id="importExportArea" style="display: none; margin-top: 16px;">
+        <textarea id="settingsData" rows="10" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #e1e4e8; font-family: monospace; font-size: 12px;"></textarea>
+        <div class="buttons-row">
+          <button id="copySettings" class="secondary-button">Копировать</button>
+          <button id="applyImport" class="primary-button">Применить</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="options-section">
+      <h2>Сброс настроек</h2>
+      <p>Удаление всех настроек блокировки</p>
+      
+      <div class="buttons-row">
+        <button id="resetAllSettings" class="secondary-button">Сбросить все настройки</button>
+      </div>
+    </div>
+    
+    <div class="options-section">
+      <h2>Информация</h2>
+      <p><strong>Версия:</strong> 2.0</p>
+      <p><strong>Описание:</strong> Умная блокировка попапов на основе правил для конкретных сайтов</p>
+      <p><strong>Как использовать:</strong></p>
+      <ul style="margin-left: 20px; margin-top: 8px;">
+        <li>Добавьте сайт в список через popup расширения</li>
+        <li>Создайте правила блокировки для конкретных попапов</li>
+        <li>Правила работают только для добавленных сайтов</li>
+        <li>Поддерживаются правила по классу, ID, селектору и содержимому</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">
+    <span id="notificationText">Настройки сохранены</span>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

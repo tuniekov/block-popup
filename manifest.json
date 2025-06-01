@@ -1,0 +1,70 @@
+{
+  "manifest_version": 3,
+  "name": "Block Popup",
+  "version": "2.0",
+  "description": "Умная блокировка попапов на основе правил для конкретных сайтов",
+  
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "contextMenus",
+    "notifications",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_start"
+    }
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Block Popup - Умная блокировка попапов",
+    "default_icon": {
+      "16": "icons/icon16.svg"
+    }
+  },
+  
+  "options_page": "options.html",
+  
+  "icons": {
+    "16": "icons/icon16.svg"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "default-rule.json",
+        "core/config.js",
+        "utils/dom-utils.js",
+        "utils/rule-utils.js",
+        "core/popup-analyzer.js",
+        "core/mutation-observer.js",
+        "core/detection-mode.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  
+  "commands": {
+    "toggle-popup-blocker": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
+      },
+      "description": "Переключить блокировку попапов для текущего сайта"
+    }
+  }
+}

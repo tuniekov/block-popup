@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Popup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header>
+      <h1>Block Popup</h1>
+      <div class="version">v2.0</div>
+    </header>
+
+    <div class="site-info">
+      <div class="site-name" id="currentSite">Текущий сайт</div>
+    </div>
+
+    <div class="settings-section">
+      <h2>Настройки для сайта</h2>
+      
+      <div class="setting-item">
+        <label for="siteEnabled">Включить блокировку попапов</label>
+        <label class="toggle-switch" for="siteEnabled">
+          <input type="checkbox" id="siteEnabled">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div id="rulesSection" style="display: none;">
+        <div class="rules-list" id="rulesList">
+          <!-- Правила будут добавлены через JavaScript -->
+        </div>
+        
+        <div class="add-rule-section">
+          <h3>Добавить правило блокировки</h3>
+          
+          <div class="auto-detect-section">
+            <button id="detectPopups" class="detect-button">🎯 Определить попапы на странице</button>
+            <div id="detectStatus" class="detect-status" style="display: none;">
+              <span id="detectStatusText">Поиск попапов...</span>
+              <button id="stopDetect" class="stop-detect-button">Остановить</button>
+            </div>
+          </div>
+          
+          <div class="manual-rule-section">
+            <h4>Или добавить вручную:</h4>
+            <div class="rule-form">
+              <div class="rule-description">
+                <input type="text" id="ruleDescription" placeholder="Описание правила (необязательно)">
+              </div>
+              
+              <div id="conditionsContainer">
+                <!-- Здесь будут добавляться условия -->
+                <div class="condition-item" data-index="0">
+                  <div class="condition-header">
+                    <span class="condition-title">Условие 1</span>
+                    <button type="button" class="remove-condition-btn" title="Удалить условие" style="display: none;">×</button>
+                  </div>
+                  <div class="condition-content">
+                    <select class="condition-type">
+                      <option value="content">Текст содержит</option>
+                      <option value="phrase">Словосочетание</option>
+                      <option value="outerHTML">HTML содержит</option>
+                      <option value="class">Класс</option>
+                      <option value="id">ID</option>
+                      <option value="selector">Селектор</option>
+                      <option value="isPopup">Является попапом</option>
+                      <option value="isLink">Является ссылкой</option>
+                      <option value="hasPopupParent">Родитель-попап</option>
+                      <option value="hasPopupChild">Потомок-попап</option>
+                    </select>
+                    <div class="condition-value-container">
+                      <input type="text" class="condition-pattern" placeholder="Введите шаблон">
+                      <div class="condition-depth-container" style="display: none;">
+                        <label>Уровень:</label>
+                        <input type="number" class="condition-depth" min="1" max="5" value="2">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="add-condition-container">
+                <button type="button" id="addCondition" class="secondary-button">+ Добавить условие</button>
+              </div>
+              
+              <div class="rule-buttons">
+                <button id="addRule" class="primary-button">Добавить правило</button>
+                <button id="cancelEdit" class="secondary-button" style="display: none;">Отмена</button>
+              </div>
+            </div>
+            
+            <div class="rule-help">
+              <p><strong>Типы условий:</strong></p>
+              <ul>
+                <li><strong>Текст содержит:</strong> Элемент содержит указанный текст</li>
+                <li><strong>Словосочетание:</strong> Элемент содержит точное словосочетание</li>
+                <li><strong>HTML содержит:</strong> HTML-код элемента содержит указанный текст</li>
+                <li><strong>Класс:</strong> Элемент имеет указанный CSS класс</li>
+                <li><strong>ID:</strong> Элемент имеет указанный ID</li>
+                <li><strong>Селектор:</strong> Элемент соответствует CSS селектору</li>
+                <li><strong>Является попапом:</strong> Элемент определяется как попап</li>
+                <li><strong>Является ссылкой:</strong> Элемент является ссылкой (тег a)</li>
+                <li><strong>Родитель-попап:</strong> Элемент имеет родителя-попап до указанного уровня вверх</li>
+                <li><strong>Потомок-попап:</strong> Элемент имеет потомка-попап до указанного уровня вниз</li>
+              </ul>
+              <p><strong>Примечание:</strong> Для условий, связанных с попапами (Является попапом, Родитель-попап, Потомок-попап), достаточно выполнения ХОТЯ БЫ ОДНОГО из них. Для всех остальных условий требуется выполнение ВСЕХ условий одновременно.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="buttons-row">
+        <button id="resetSiteSettings" class="secondary-button">Сбросить</button>
+        <button id="saveSiteSettings" class="primary-button">Сохранить</button>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <h2>Управление сайтами</h2>
+      
+      <div class="site-management">
+        <div class="site-status" id="siteStatus">
+          <span id="statusText">Включите блокировку для добавления сайта</span>
+        </div>
+        
+        <div class="buttons-row">
+          <button id="removeSite" class="secondary-button" style="display: none;">Удалить сайт</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="debug-section">
+        <label for="debugMode" class="debug-label">
+          <input type="checkbox" id="debugMode">
+          <span>Режим отладки</span>
+        </label>
+        <button id="reloadScripts" class="reload-button">🔄 Перезагрузить скрипты</button>
+      </div>
+      <button id="openOptions" class="text-button">Расширенные настройки</button>
+    </div>
+  </div>
+  
+  <div class="notification" id="notification">
+    <span id="notificationText">Настройки сохранены</span>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
