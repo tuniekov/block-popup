@@ -195,14 +195,23 @@ block-popup/
 ├── manifest.json          # Манифест расширения
 ├── background.js          # Фоновый скрипт
 ├── content-script.js      # Скрипт для анализа страниц
-├── popup.html            # Интерфейс popup
-├── popup.js              # Логика popup
-├── options.html          # Страница настроек
-├── options.js            # Логика настроек
-├── styles.css            # Стили интерфейса
-├── icons/                # Иконки расширения
-│   └── icon16.svg
-└── README.md             # Документация
+├── popup.html             # Интерфейс popup
+├── popup.js               # Логика popup
+├── options.html           # Страница настроек
+├── options.js             # Логика настроек
+├── styles.css             # Стили интерфейса
+├── default-rule.json      # Правила блокировки по умолчанию
+├── core/                  # Основные модули расширения
+│   ├── config.js          # Конфигурация и настройки
+│   ├── detection-mode.js  # Режим определения попапов
+│   ├── mutation-observer.js # Наблюдатель за DOM
+│   └── popup-analyzer.js  # Анализатор попапов
+├── utils/                 # Вспомогательные утилиты
+│   ├── dom-utils.js       # Утилиты для работы с DOM
+│   └── rule-utils.js      # Утилиты для работы с правилами
+├── icons/                 # Иконки расширения
+│   └── icon16.svg         # Основная иконка
+└── README.md              # Документация
 ```
 
 ### Локальная разработка
